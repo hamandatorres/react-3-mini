@@ -3,6 +3,9 @@ import logo from './mainStreetAuto.svg'
 import axios from 'axios'
 import './App.css'
 
+
+// Base https://joes-autos.herokuapp.com/api
+
 // Toast notification dependencies
 import { ToastContainer, toast } from 'react-toastify'
 
@@ -14,7 +17,7 @@ class App extends Component {
       vehiclesToDisplay: [],
       buyersToDisplay: [],
     }
-
+    
     this.getVehicles = this.getVehicles.bind(this)
     this.getPotentialBuyers = this.getPotentialBuyers.bind(this)
     this.sellCar = this.sellCar.bind(this)
@@ -31,6 +34,12 @@ class App extends Component {
   getVehicles() {
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get('https://joes-autos.herokuapp.com/api/vehicles')
+    .then(response => {
+      console.log(response)
+      this.setState({ vehiclesToDisplay: response.data })
+    })
+    .catch(error => console.log(error))
   }
 
   getPotentialBuyers() {
@@ -41,6 +50,11 @@ class App extends Component {
   sellCar(id) {
     // axios (DELETE)
     // setState with response -> vehiclesToDisplay
+    axios.delete(`https://joes-autos.herokuapp.com/api/vehicles/${id}`)
+    .then(response => {
+      this.setState({ vehiclesToDisplay: response.data.vehicles })
+    })
+    .catch(error => console.log(error))
   }
 
   filterByMake() {
@@ -60,6 +74,11 @@ class App extends Component {
   updatePrice(priceChange, id) {
     // axios (PUT)
     // setState with response -> vehiclesToDisplay
+    axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${priceChange}`)
+    .then( response => {
+      this.setState({ vehiclesToDisplay: response.data.vehicles })
+    })
+    .catch(error => console.log(error))
   }
 
   addCar() {
@@ -73,6 +92,11 @@ class App extends Component {
 
     // axios (POST)
     // setState with response -> vehiclesToDisplay
+    axios.post(`https://joes-autos.herokuapp.com/api/vehicles`, newCar)
+    .then( response => {
+      this.setState({ vehiclesToDisplay: response.data.vehicles })
+    })
+    .catch(error => console.log(error))
   }
 
   addBuyer() {
